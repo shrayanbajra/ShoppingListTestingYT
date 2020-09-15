@@ -56,4 +56,36 @@ class ShoppingDaoTest {
 
     }
 
+    @Test
+    fun deleteShoppingItem() = runBlockingTest {
+
+        val shoppingItem = ShoppingItem("shirt", 1, 1f, "url", 1)
+        shoppingDao.insertShoppingItem(shoppingItem)
+
+        shoppingDao.deleteShoppingItem(shoppingItem)
+
+        val allShoppingItems = shoppingDao.observeAllShoppingItems().getOrAwaitValue()
+
+        assertThat(allShoppingItems).doesNotContain(shoppingItem)
+
+    }
+
+    @Test
+    fun observeTotalPriceSum() = runBlockingTest {
+
+        val shoppingItem1 = ShoppingItem("shirt", 1, 1f, "url", 1)
+        val shoppingItem2 = ShoppingItem("jeans", 2, 1f, "url", 2)
+        shoppingDao.insertShoppingItem(shoppingItem1)
+        shoppingDao.insertShoppingItem(shoppingItem2)
+
+        val expectedSum = shoppingDao.observeTotalPrice().getOrAwaitValue()
+
+        val shoppingItem1Sum = (shoppingItem1.amount * shoppingItem1.price)
+        val shoppingItem2Sum = (shoppingItem2.amount * shoppingItem2.price)
+        val actualSum = shoppingItem1Sum + shoppingItem2Sum
+
+        assertThat(expectedSum).isEqualTo(actualSum)
+
+    }
+
 }
