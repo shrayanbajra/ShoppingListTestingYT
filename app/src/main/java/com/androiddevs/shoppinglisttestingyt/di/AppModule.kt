@@ -2,13 +2,17 @@ package com.androiddevs.shoppinglisttestingyt.di
 
 import android.content.Context
 import androidx.room.Room
+import com.androiddevs.shoppinglisttestingyt.Constants.BASE_URL
 import com.androiddevs.shoppinglisttestingyt.Constants.DATABASE_NAME
 import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingItemDatabase
+import com.androiddevs.shoppinglisttestingyt.network.PixabayAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -26,5 +30,14 @@ object AppModule {
     fun provideShoppingDao(
         database: ShoppingItemDatabase
     ) = database.shoppingDao()
+
+    @Singleton
+    @Provides
+    fun providePixabayAPI(): PixabayAPI {
+        return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BASE_URL)
+            .build()
+            .create(PixabayAPI::class.java)
+    }
 
 }
