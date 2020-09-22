@@ -2,8 +2,11 @@ package com.androiddevs.shoppinglisttestingyt.di
 
 import android.content.Context
 import androidx.room.Room
+import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingDao
 import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingItemDatabase
 import com.androiddevs.shoppinglisttestingyt.network.PixabayAPI
+import com.androiddevs.shoppinglisttestingyt.repository.DefaultShoppingRepository
+import com.androiddevs.shoppinglisttestingyt.repository.ShoppingRepository
 import com.androiddevs.shoppinglisttestingyt.utils.Constants.BASE_URL
 import com.androiddevs.shoppinglisttestingyt.utils.Constants.DATABASE_NAME
 import dagger.Module
@@ -38,6 +41,14 @@ object AppModule {
             .baseUrl(BASE_URL)
             .build()
             .create(PixabayAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideDefaultShoppingRepository(
+        shoppingDao: ShoppingDao, pixabayAPI: PixabayAPI
+    ): ShoppingRepository {
+        return DefaultShoppingRepository(shoppingDao, pixabayAPI)
     }
 
 }
