@@ -1,4 +1,4 @@
-package com.androiddevs.shoppinglisttestingyt
+package com.androiddevs.shoppinglisttestingyt.utils
 
 object Constants {
 

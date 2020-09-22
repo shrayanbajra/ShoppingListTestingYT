@@ -2,10 +2,10 @@ package com.androiddevs.shoppinglisttestingyt.di
 
 import android.content.Context
 import androidx.room.Room
-import com.androiddevs.shoppinglisttestingyt.Constants.BASE_URL
-import com.androiddevs.shoppinglisttestingyt.Constants.DATABASE_NAME
 import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingItemDatabase
 import com.androiddevs.shoppinglisttestingyt.network.PixabayAPI
+import com.androiddevs.shoppinglisttestingyt.utils.Constants.BASE_URL
+import com.androiddevs.shoppinglisttestingyt.utils.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
