@@ -71,7 +71,7 @@ class ShoppingDaoTest {
     }
 
     @Test
-    fun observeTotalPriceSum() = runBlockingTest {
+    fun observePriceSum() = runBlockingTest {
 
         val shoppingItem1 = ShoppingItem("shirt", 1, 1f, "url", 1)
         val shoppingItem2 = ShoppingItem("jeans", 2, 1f, "url", 2)
