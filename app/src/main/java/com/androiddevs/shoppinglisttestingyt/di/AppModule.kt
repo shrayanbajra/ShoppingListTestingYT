@@ -30,14 +30,13 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideShoppingDao(
-        database: ShoppingItemDatabase
-    ) = database.shoppingDao()
+    fun provideShoppingDao(database: ShoppingItemDatabase) = database.shoppingDao()
 
     @Singleton
     @Provides
     fun providePixabayAPI(): PixabayAPI {
-        return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+        return Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
             .build()
             .create(PixabayAPI::class.java)
