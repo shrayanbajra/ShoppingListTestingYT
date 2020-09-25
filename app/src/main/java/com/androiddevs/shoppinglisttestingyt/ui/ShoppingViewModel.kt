@@ -20,21 +20,23 @@ class ShoppingViewModel @ViewModelInject constructor(
     val shoppingItems = repository.observeAllShoppingItems()
     val totalPrice = repository.observeTotalPrice()
 
-    private val images = MutableLiveData<Event<Resource<ImageResponse>>>()
+    private val _images = MutableLiveData<Event<Resource<ImageResponse>>>()
 
-    fun getImages() = images as LiveData<Event<Resource<ImageResponse>>>
+    val images: LiveData<Event<Resource<ImageResponse>>>
+        get() = _images
 
-    private val currentImageURL = MutableLiveData<String>()
+    private val _currentImageURL = MutableLiveData<String>()
 
-    fun getCurrentImageURL() = currentImageURL as LiveData<String>
+    val currentImageURL: LiveData<String>
+        get() = _currentImageURL
 
-    private val insertShoppingItemStatus = MutableLiveData<Event<Resource<ShoppingItem>>>()
+    private val _insertShoppingItemStatus = MutableLiveData<Event<Resource<ShoppingItem>>>()
 
-    fun getShoppingItemStatus() = insertShoppingItemStatus
-            as LiveData<Event<Resource<ShoppingItem>>>
+    val insertShoppingItemStatus: LiveData<Event<Resource<ShoppingItem>>>
+        get() = _insertShoppingItemStatus
 
     fun setCurrentImageURL(url: String) {
-        currentImageURL.postValue(url)
+        _currentImageURL.postValue(url)
     }
 
     fun deleteShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launch {
@@ -50,7 +52,7 @@ class ShoppingViewModel @ViewModelInject constructor(
         val hasEmptyInputs = name.isEmpty() || amountString.isEmpty() || priceString.isEmpty()
         if (hasEmptyInputs) {
             val errorResource = Resource.error("The fields must not be empty", null)
-            insertShoppingItemStatus.postValue(Event(errorResource))
+            _insertShoppingItemStatus.postValue(Event(errorResource))
             return
         }
 
@@ -58,7 +60,7 @@ class ShoppingViewModel @ViewModelInject constructor(
             val errorMessage =
                 "The name of the item must not exceed ${Constants.MAX_NAME_LENGTH} characters"
             val errorResource = Resource.error(errorMessage, null)
-            insertShoppingItemStatus.postValue(Event(errorResource))
+            _insertShoppingItemStatus.postValue(Event(errorResource))
             return
         }
 
@@ -66,7 +68,7 @@ class ShoppingViewModel @ViewModelInject constructor(
             val errorMessage =
                 "The price of the item must not exceed ${Constants.MAX_PRICE_LENGTH} characters"
             val errorResource = Resource.error(errorMessage, null)
-            insertShoppingItemStatus.postValue(Event(errorResource))
+            _insertShoppingItemStatus.postValue(Event(errorResource))
             return
         }
 
@@ -78,29 +80,29 @@ class ShoppingViewModel @ViewModelInject constructor(
 
             val errorMessage = "Please enter a valid amount"
             val errorResource = Resource.error(errorMessage, null)
-            insertShoppingItemStatus.postValue(Event(errorResource))
+            _insertShoppingItemStatus.postValue(Event(errorResource))
             return
 
         }
 
-        val imageURL = currentImageURL.value ?: ""
+        val imageURL = _currentImageURL.value ?: ""
         val shoppingItem = ShoppingItem(name, amount, priceString.toFloat(), imageURL, 0)
 
         insertShoppingItemIntoDb(shoppingItem)
         setCurrentImageURL("") // Clearing the image url since we want to show blank preview now
 
         val successResource = Resource.success(shoppingItem)
-        insertShoppingItemStatus.postValue(Event(successResource))
+        _insertShoppingItemStatus.postValue(Event(successResource))
     }
 
     fun searchForImage(imageQuery: String) {
 
         if (imageQuery.isEmpty()) return
 
-        images.value = Event(Resource.loading(null))
+        _images.value = Event(Resource.loading(null))
         viewModelScope.launch {
             val response = repository.searchForImage(imageQuery)
-            images.value = Event(response)
+            _images.value = Event(response)
         }
 
     }

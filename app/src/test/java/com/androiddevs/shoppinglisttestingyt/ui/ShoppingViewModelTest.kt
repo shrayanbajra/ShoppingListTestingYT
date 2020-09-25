@@ -33,7 +33,7 @@ class ShoppingViewModelTest {
 
         viewModel.insertShoppingItem("name", "", "24.50")
 
-        val value = viewModel.getShoppingItemStatus().getOrAwaitValueTest()
+        val value = viewModel.insertShoppingItemStatus.getOrAwaitValueTest()
 
         assertThat(value.getContentIfNotHandled()?.status).isEqualTo(Status.ERROR)
 
@@ -51,7 +51,7 @@ class ShoppingViewModelTest {
 
         viewModel.insertShoppingItem(invalidName, "25", "24.50")
 
-        val value = viewModel.getShoppingItemStatus().getOrAwaitValueTest()
+        val value = viewModel.insertShoppingItemStatus.getOrAwaitValueTest()
 
         assertThat(value.getContentIfNotHandled()?.status).isEqualTo(Status.ERROR)
 
@@ -69,7 +69,7 @@ class ShoppingViewModelTest {
 
         viewModel.insertShoppingItem("name", "25", invalidPrice)
 
-        val value = viewModel.getShoppingItemStatus().getOrAwaitValueTest()
+        val value = viewModel.insertShoppingItemStatus.getOrAwaitValueTest()
 
         assertThat(value.getContentIfNotHandled()?.status).isEqualTo(Status.ERROR)
 
@@ -82,7 +82,7 @@ class ShoppingViewModelTest {
 
         viewModel.insertShoppingItem("name", invalidAmount, "2.5")
 
-        val value = viewModel.getShoppingItemStatus().getOrAwaitValueTest()
+        val value = viewModel.insertShoppingItemStatus.getOrAwaitValueTest()
 
         assertThat(value.getContentIfNotHandled()?.status).isEqualTo(Status.ERROR)
 
@@ -93,7 +93,7 @@ class ShoppingViewModelTest {
 
         viewModel.insertShoppingItem("name", "24", "2.5")
 
-        val value = viewModel.getShoppingItemStatus().getOrAwaitValueTest()
+        val value = viewModel.insertShoppingItemStatus.getOrAwaitValueTest()
 
         assertThat(value.getContentIfNotHandled()?.status).isEqualTo(Status.SUCCESS)
 

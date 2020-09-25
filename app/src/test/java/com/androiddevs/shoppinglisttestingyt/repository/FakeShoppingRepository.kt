@@ -31,6 +31,7 @@ class FakeShoppingRepository : ShoppingRepository {
 
     private fun refreshLiveData() {
         observableShoppingItem.postValue(shoppingItems)
+
         val totalPrice = getTotalPrice()
         observableTotalPrice.postValue(totalPrice)
     }
